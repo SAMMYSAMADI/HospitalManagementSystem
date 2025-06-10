@@ -17,11 +17,17 @@ public class Patient {
 
     public void addPatient(){
         System.out.print("Enter Patient Name: ");
-        String name = scanner.next();
+        String name = scanner.nextLine();
         System.out.print("Enter Patient Age: ");
-        int age = scanner.nextInt();
+        int age = 0; // Initialize with a default value
+        try {
+            age = Integer.parseInt(scanner.nextLine()); // Read line and parse to int
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid age entered. Please enter a number.");
+            return; // Exit if age is invalid
+        }
         System.out.print("Enter Patient Gender: ");
-        String gender = scanner.next();
+        String gender = scanner.nextLine();
 
         try{
             String query = "INSERT INTO patients(name, age,gender) VALUES(?, ?, ?)";
@@ -56,9 +62,10 @@ public class Patient {
                 String name = resultSet.getString("name");
                 int age = resultSet.getInt("age");
                 String gender = resultSet.getString("gender");
-                System.out.printf("|%-12d|%-22s|%-9d|%-12s|\n", id, name, age, gender);
-
+                System.out.printf("| %-10d | %-20s | %-7d | %-10s |\n", id, name, age, gender);
             }
+            System.out.println("+------------+----------------------+---------+------------+");
+
         }catch (SQLException e){
             e.printStackTrace();
         }
